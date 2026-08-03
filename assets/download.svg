@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 180">
+  <g fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- Location Pin -->
+    <path d="M70 20
+             C42 20 20 42 20 70
+             C20 112 70 160 70 160
+             C70 160 120 112 120 70
+             C120 42 98 20 70 20Z"></path>
+
+    <!-- Hotel -->
+    <path d="M45 78 L70 58 L95 78"></path>
+    <rect x="50" y="78" width="40" height="42" rx="2"></rect>
+    <line x1="70" y1="95" x2="70" y2="120"></line>
+    <line x1="60" y1="88" x2="60" y2="96"></line>
+    <line x1="80" y1="88" x2="80" y2="96"></line>
+
+  </g>
+
+  <!-- Brand Name -->
+  <text x="155" y="95" fill="#FFFFFF" font-family="Poppins, Montserrat, Arial, sans-serif" font-size="64" font-weight="700">
+    StaYzo
+  </text>
+
+  <!-- Tagline -->
+  <text x="160" y="128" fill="#FFFFFF" font-family="Poppins, Arial, sans-serif" font-size="18" letter-spacing="4">
+    STAY • BOOK • EXPLORE
+  </text>
+</svg>
