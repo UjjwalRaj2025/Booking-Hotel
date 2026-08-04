@@ -5,6 +5,7 @@ import { clerkMiddleware } from "@clerk/express";
 
 import connectDB from "./configs/db.js";
 import clerkWebhooks from "./controllers/clerkWebhooks.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -32,6 +33,9 @@ app.use(express.json());
 
 // Clerk Middleware
 app.use(clerkMiddleware());
+
+// User Routes
+app.use("/api/user", userRoutes);
 
 // Test Route
 app.get("/", (req, res) => {
