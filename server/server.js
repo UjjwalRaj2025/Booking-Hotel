@@ -1,30 +1,45 @@
 import express from "express";
-import "dotenv/config";
+import dotenv from "dotenv";
 import cors from "cors";
-import connectDB from "./configs/db.js";
 import { clerkMiddleware } from "@clerk/express";
+
+import connectDB from "./configs/db.js";
 import clerkWebhooks from "./controllers/clerkWebhooks.js";
 
-connectDB();
+dotenv.config();
 
 const app = express();
 
+// Connect Database
+connectDB();
+
+// CORS
 app.use(cors());
 
-// Clerk webhook FIRST (raw body)
+// -------------------------------
+// Clerk Webhook (MUST COME FIRST)
+// -------------------------------
 app.post(
   "/api/clerk",
   express.raw({ type: "application/json" }),
   clerkWebhooks
 );
 
-// Then JSON parser for the rest of your API
+// -------------------------------
+// JSON Middleware
+// -------------------------------
 app.use(express.json());
 
+// Clerk Middleware
 app.use(clerkMiddleware());
 
-app.get("/", (req, res) => res.send("API is Working"));
+// Test Route
+app.get("/", (req, res) => {
+  res.send("🚀 Hotel Booking Backend Running...");
+});
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => console.log(`Server running on Port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`✅ Server running on Port ${PORT}`);
+});
