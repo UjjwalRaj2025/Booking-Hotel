@@ -62,6 +62,6 @@ const clerkWebhooks = async (req, res) => {
   });
   }
 };
->>>>>>> da006e5246d6b69e94669ba5dafcb573baaed78c
+
 
 export default clerkWebhooks;
