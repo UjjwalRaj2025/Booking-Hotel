@@ -1,45 +1,26 @@
-import express from "express";
-import dotenv from "dotenv";
+import express from "express"
+import "dotenv/config";
 import cors from "cors";
-import { clerkMiddleware } from "@clerk/express";
-
+import { connect } from "mongoose";
 import connectDB from "./configs/db.js";
+import { clerkMiddleware } from '@clerk/express'
 import clerkWebhooks from "./controllers/clerkWebhooks.js";
 
-dotenv.config();
+connectDB()
 
-const app = express();
+const app = express()
+app.use(cors()) //Enable cros-origin resource sharing
 
-// Connect Database
-connectDB();
+//middleware
+app.use(express.json())
+app.use(clerkMiddleware())
 
-// CORS
-app.use(cors());
+//API to listen to clerkWebhooks
+app.use("/api/clerk", clerkWebhooks);
 
-// -------------------------------
-// Clerk Webhook (MUST COME FIRST)
-// -------------------------------
-app.post(
-  "/api/clerk",
-  express.raw({ type: "application/json" }),
-  clerkWebhooks
-);
 
-// -------------------------------
-// JSON Middleware
-// -------------------------------
-app.use(express.json());
-
-// Clerk Middleware
-app.use(clerkMiddleware());
-
-// Test Route
-app.get("/", (req, res) => {
-  res.send("🚀 Hotel Booking Backend Running...");
-});
+app.get('/',(req, res)=> res.send('API is working '))
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`✅ Server running on Port ${PORT}`);
-});
+app.listen(PORT, ()=> console.log(`Server runnung on port ${PORT}`));

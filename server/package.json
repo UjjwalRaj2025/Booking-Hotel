@@ -1,22 +1,23 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Hotel Booking Backend",
-  "type": "module",
+  "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js"
   },
-  "author": "Ujjwal Raj",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "@clerk/express": "^2.1.49",
+    "@clerk/express": "^2.1.50",
     "cloudinary": "^2.10.0",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^4.21.2",
-    "mongoose": "^8.18.0",
+    "express": "^5.2.1",
+    "mongoose": "^9.9.1",
     "multer": "^2.2.0",
     "svix": "^1.99.1"
   },
