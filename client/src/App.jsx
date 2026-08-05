@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from './components/Navbar'
 import {Route, Routes, useLocation} from 'react-router-dom'
+import { useUser, useAuth } from '@clerk/react'
 import Home from './pages/Home'
 import Footer from './components/Footer'
 import AllRooms from './pages/AllRooms'
@@ -14,8 +15,40 @@ import ListRoom from "./pages/hotelOwner/ListRoom";
 
 
 const App =() => {
+  const isOwnerPath = useLocation().pathname.startsWith("/owner");
+  const { isLoaded, isSignedIn, user } = useUser();
+  const { getToken } = useAuth();
 
-const isOwnerPath = useLocation().pathname.startsWith("/owner");
+  useEffect(() => {
+    const syncUserToDB = async () => {
+      if (isLoaded && isSignedIn && user) {
+        try {
+          const token = await getToken();
+          const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+          await fetch(`${backendUrl}/api/user/sync`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              username:
+                user.fullName ||
+                user.username ||
+                user.primaryEmailAddress?.emailAddress?.split("@")[0] ||
+                "User",
+              email: user.primaryEmailAddress?.emailAddress || "",
+              image: user.imageUrl || "",
+            }),
+          });
+        } catch (err) {
+          console.error("Failed to sync user to MongoDB:", err);
+        }
+      }
+    };
+
+    syncUserToDB();
+  }, [isLoaded, isSignedIn, user]);
   return(
     <div>
      {!isOwnerPath && <Navbar />}
