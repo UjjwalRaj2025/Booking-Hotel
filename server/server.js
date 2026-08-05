@@ -20,9 +20,6 @@ app.use(clerkMiddleware())
 app.use("/api/clerk", clerkWebhooks);
 
 
-<<<<<<< HEAD
-app.get('/',(req, res)=> res.send('API is working '))
-=======
 // -------------------------------
 // JSON Middleware
 // -------------------------------
@@ -38,7 +35,6 @@ app.use("/api/user", userRoutes);
 app.get("/", (req, res) => {
   res.send("🚀 Hotel Booking Backend Running...");
 });
->>>>>>> da006e5246d6b69e94669ba5dafcb573baaed78c
 
 const PORT = process.env.PORT || 3000;
 
