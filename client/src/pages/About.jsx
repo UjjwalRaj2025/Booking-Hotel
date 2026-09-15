@@ -39,7 +39,7 @@ const About = () => {
       {/* Header Section */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <Title
-          title="About QuickStay"
+          title="About StaYzo"
           subTitle="Elevating how modern travelers discover, experience, and reserve handpicked luxury accommodations around the world."
           align="center"
         />
@@ -91,7 +91,7 @@ const About = () => {
             Crafting Unforgettable Stay Experiences Since Day One
           </h2>
           <p className="text-base font-light leading-relaxed">
-            Founded with a vision to redefine hospitality booking, QuickStay connects discerning travelers with extraordinary hotels, luxury villas, and boutique resorts across the globe.
+            Founded with a vision to redefine hospitality booking, StaYzo connects discerning travelers with extraordinary hotels, luxury villas, and boutique resorts across the globe.
           </p>
           <p className="text-base font-light leading-relaxed">
             We believe that a hotel is more than just a room to sleep in—it is the heart of your journey. That’s why we partner exclusively with verified properties that meet our stringent standards for elegance, safety, and pristine service.

@@ -18,12 +18,8 @@ const Footer = () => {
                         
                         <div className="lg:col-span-3 space-y-6">
                             <a href="#" className="block">
-                       <img src={assets.logo} alt="logo"/>    
-                          
-                                
-
-
-                            </a>
+                          <img src={assets.logo} alt="logo" className="h-[45px] invert" />    
+                        </a>
                             <p className="text-sm/6 text-neutral-600 max-w-96">Discover the world's most extraordinary places to stay,      from boutique hotels to luxury villas and private islands.</p>
                             <div className="flex gap-5 md:gap-6 order-1 md:order-2">
                                 

@@ -58,9 +58,16 @@ const HotelReg = () => {
 
     
 
+    React.useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, []);
+
     return (
-        <div onClick={() => setShowHotelReg(false)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 animate-page-entry">
-            <form onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()} className="flex bg-white rounded-xl max-w-4xl w-full mx-4 overflow-hidden shadow-xl">
+        <div onClick={() => setShowHotelReg(false)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 overflow-y-auto animate-page-entry">
+            <form onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()} className="flex bg-white rounded-xl sm:rounded-2xl max-w-4xl w-full mx-auto my-auto max-h-[90vh] overflow-y-auto shadow-2xl">
 
                 <img
                     src={assets.regImage}

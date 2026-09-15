@@ -42,6 +42,20 @@ const Navbar = () => {
         }
     };
 
+    const handleExperienceClick = (e) => {
+        e.preventDefault();
+        if (location.pathname !== "/") {
+            navigate("/");
+            setTimeout(() => {
+                const elem = document.getElementById("experience");
+                if (elem) elem.scrollIntoView({ behavior: "smooth" });
+            }, 300);
+        } else {
+            const elem = document.getElementById("experience");
+            if (elem) elem.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
 
     useEffect(() => {
 
@@ -67,17 +81,32 @@ const Navbar = () => {
 
                 {/* Logo */}
                 <Link to ='/'>
-                    <img src={assets.logo} alt="logo" className={`h-9 ${isScrolled && "invert opacity-80"}`}/>    
-                     </Link>
+                    <img src={assets.logo} alt="logo" className={`h-[45px] transition-all duration-300 ${isScrolled && "invert opacity-80"}`}/>    
+                </Link>
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-4 lg:gap-8">
-                    {navLinks.map((link, i) => (
-                        <Link key={i} to={link.path} className={`group flex flex-col gap-0.5 ${isScrolled ? "text-gray-700" : "text-white"}`}>
-                            {link.name}
-                            <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
-                        </Link>
-                    ))}
+                    {navLinks.map((link, i) => {
+                        if (link.name === 'Experience') {
+                            return (
+                                <a
+                                    key={i}
+                                    href="#experience"
+                                    onClick={handleExperienceClick}
+                                    className={`group flex flex-col gap-0.5 cursor-pointer ${isScrolled ? "text-gray-700" : "text-white"}`}
+                                >
+                                    {link.name}
+                                    <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
+                                </a>
+                            );
+                        }
+                        return (
+                            <Link key={i} to={link.path} className={`group flex flex-col gap-0.5 ${isScrolled ? "text-gray-700" : "text-white"}`}>
+                                {link.name}
+                                <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
+                            </Link>
+                        );
+                    })}
                     <button onClick={handleDashboardClick} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
                         {user && isOwner ? "Dashboard" : "List Your Hotel"}
                     </button>
@@ -138,11 +167,28 @@ const Navbar = () => {
                         <img src={assets.closeIcon} alt="close-menu" className="h-6.5" />
                     </button>
 
-                    {navLinks.map((link, i) => (
-                        <Link key={i} to={link.path} onClick={() => setIsMenuOpen(false)}>
-                            {link.name}
-                        </Link>
-                    ))}
+                    {navLinks.map((link, i) => {
+                        if (link.name === 'Experience') {
+                            return (
+                                <a
+                                    key={i}
+                                    href="#experience"
+                                    onClick={(e) => {
+                                        setIsMenuOpen(false);
+                                        handleExperienceClick(e);
+                                    }}
+                                    className="cursor-pointer"
+                                >
+                                    {link.name}
+                                </a>
+                            );
+                        }
+                        return (
+                            <Link key={i} to={link.path} onClick={() => setIsMenuOpen(false)}>
+                                {link.name}
+                            </Link>
+                        );
+                    })}
 
                     <button onClick={() => { setIsMenuOpen(false); handleDashboardClick(); }} className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
                         {user && isOwner ? "Dashboard" : "List Your Hotel"}

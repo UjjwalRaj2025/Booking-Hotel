@@ -10,7 +10,7 @@ const Navbar = () => {
         <img
           src={assets.logo}
           alt="logo"
-          className="h-9 invert opacity-80"
+          className="h-[45px] invert opacity-80"
         />
       </Link>
 

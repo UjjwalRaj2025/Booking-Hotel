@@ -1,15 +1,30 @@
 import React, { useState } from "react";
-import { assets } from "../assets/assets";
 import { toast } from "react-hot-toast";
+import { useAppContext } from "../context/AppContext";
 
 const NewsLetter = () => {
+  const { axios } = useAppContext();
   const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
     if (!email) return toast.error("Please enter your email address");
-    toast.success("Thank you for subscribing to StayZo!");
-    setEmail("");
+
+    try {
+      setIsSubmitting(true);
+      const { data } = await axios.post("/api/user/subscribe", { email });
+      if (data.success) {
+        toast.success(data.message || "Thank you for subscribing to StaYzo!");
+        setEmail("");
+      } else {
+        toast.error(data.message || "Subscription failed");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message || "Failed to send subscription email");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -56,10 +71,22 @@ const NewsLetter = () => {
               placeholder="Enter your email"
               className="flex-1 px-4 outline-none text-gray-700 text-sm"
               required
+              disabled={isSubmitting}
             />
 
-            <button type="submit" className="bg-black hover:bg-gray-800 transition text-white px-8 py-2.5 rounded-full font-medium text-sm cursor-pointer">
-              Subscribe
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-black hover:bg-gray-800 transition text-white px-8 py-2.5 rounded-full font-medium text-sm cursor-pointer disabled:opacity-50 flex items-center gap-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  Subscribing...
+                </>
+              ) : (
+                "Subscribe"
+              )}
             </button>
 
           </form>

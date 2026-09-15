@@ -63,7 +63,7 @@ export const sendBookingConfirmationEmail = async ({
             <!-- BRAND HEADER -->
             <tr>
               <td style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%); padding: 40px; text-align: center;">
-                <h1 style="color: #ffffff; margin: 0; font-size: 30px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">QUICKSTAY</h1>
+                <h1 style="color: #ffffff; margin: 0; font-size: 30px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">STAYZO</h1>
                 <p style="color: #c7d2fe; margin: 8px 0 0 0; font-size: 14px; font-weight: 300;">Luxury Hotel Reservations & Stays</p>
               </td>
             </tr>
@@ -159,7 +159,7 @@ export const sendBookingConfirmationEmail = async ({
                   We look forward to welcoming you! If you need to make any changes, feel free to contact us.
                 </p>
                 <p style="margin: 0; font-size: 12px; color: #9ca3af;">
-                  © 2026 QuickStay Hotel Booking Inc. All rights reserved.
+                  © 2026 StaYzo Hotel Booking Inc. All rights reserved.
                 </p>
               </td>
             </tr>
@@ -176,7 +176,7 @@ export const sendBookingConfirmationEmail = async ({
   if (resend) {
     try {
       const response = await resend.emails.send({
-        from: 'QuickStay <onboarding@resend.dev>',
+        from: 'StaYzo <onboarding@resend.dev>',
         to: [targetGuestEmail],
         subject: `🏨 Booking Confirmed: ${hotelName} (${nights} ${nights === 1 ? "Night" : "Nights"})`,
         html: htmlContent,
@@ -191,7 +191,7 @@ export const sendBookingConfirmationEmail = async ({
         // Send alert copy to owner if different email
         if (targetGuestEmail !== senderEmail) {
           resend.emails.send({
-            from: 'QuickStay <onboarding@resend.dev>',
+            from: 'StaYzo <onboarding@resend.dev>',
             to: [senderEmail],
             subject: `🔔 New Booking Alert: ${hotelName} by ${userName}`,
             html: `<p>A new booking was made by <strong>${userName}</strong> (${targetGuestEmail}) for <strong>${hotelName}</strong>.</p>` + htmlContent,
@@ -206,7 +206,7 @@ export const sendBookingConfirmationEmail = async ({
 
   // 2. Nodemailer Brevo SMTP (Fallback / Backup)
   const guestMailOptions = {
-    from: `"QuickStay Bookings" <${senderEmail}>`,
+    from: `"StaYzo Bookings" <${senderEmail}>`,
     to: targetGuestEmail,
     subject: `🏨 Booking Confirmed: ${hotelName} (${nights} ${nights === 1 ? "Night" : "Nights"})`,
     html: htmlContent,
@@ -218,7 +218,7 @@ export const sendBookingConfirmationEmail = async ({
 
     if (targetGuestEmail !== senderEmail) {
       transporter.sendMail({
-        from: `"QuickStay Alert" <${senderEmail}>`,
+        from: `"StaYzo Alert" <${senderEmail}>`,
         to: senderEmail,
         subject: `🔔 New Booking Alert: ${hotelName} by ${userName}`,
         html: `<p>A new booking was made by <strong>${userName}</strong> (${targetGuestEmail}) for <strong>${hotelName}</strong>.</p>` + htmlContent,
@@ -230,3 +230,118 @@ export const sendBookingConfirmationEmail = async ({
     console.error("❌ Nodemailer Email Delivery Error:", error.message);
   }
 };
+
+/**
+ * Sends a luxury HTML Welcome & Voucher email when a user subscribes to the newsletter.
+ */
+export const sendNewsletterWelcomeEmail = async ({ email }) => {
+  const senderEmail = process.env.SENDER_EMAIL || "ujjwal2007r@gmail.com";
+  const targetEmail = (email && email.includes("@")) ? email : senderEmail;
+
+  const htmlContent = `
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to StaYzo</title>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1f2937;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f3f4f6; padding: 40px 15px;">
+      <tr>
+        <td align="center">
+          <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.08);">
+            
+            <!-- BRAND HEADER -->
+            <tr>
+              <td style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%); padding: 40px; text-align: center;">
+                <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">STAYZO</h1>
+                <p style="color: #c7d2fe; margin: 8px 0 0 0; font-size: 14px; font-weight: 300;">Exclusive Travel & Luxury Stays</p>
+              </td>
+            </tr>
+
+            <!-- WELCOME BADGE -->
+            <tr>
+              <td style="padding: 35px 40px 10px 40px; text-align: center;">
+                <span style="background-color: #e0e7ff; color: #3730a3; font-size: 12px; font-weight: 700; text-transform: uppercase; padding: 8px 20px; border-radius: 50px; letter-spacing: 1px; display: inline-block;">
+                  🎁 VIP Travel Club Member
+                </span>
+                <h2 style="margin: 20px 0 10px 0; color: #111827; font-size: 26px; font-weight: 700;">Welcome to StaYzo!</h2>
+                <p style="margin: 0; color: #4b5563; font-size: 15px; line-height: 1.6;">
+                  Thank you for subscribing to our newsletter! You are now first in line to receive private hotel deals, seasonal promotional codes, and curated travel inspiration.
+                </p>
+              </td>
+            </tr>
+
+            <!-- WELCOME VOUCHER CARD -->
+            <tr>
+              <td style="padding: 25px 40px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 16px; padding: 24px; text-align: center;">
+                  <tr>
+                    <td>
+                      <p style="margin: 0 0 6px 0; font-size: 12px; text-transform: uppercase; font-weight: 800; color: #92400e; letter-spacing: 1px;">Exclusive Welcome Gift</p>
+                      <h3 style="margin: 0 0 8px 0; font-size: 28px; font-weight: 900; color: #78350f;">$50 OFF YOUR NEXT STAY</h3>
+                      <p style="margin: 0 0 16px 0; font-size: 13px; color: #92400e;">Use promo code at checkout on any luxury booking</p>
+                      <span style="background-color: #78350f; color: #ffffff; font-family: monospace; font-size: 18px; font-weight: 700; padding: 10px 24px; border-radius: 8px; letter-spacing: 3px; display: inline-block;">
+                        STAYZO50
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- FOOTER -->
+            <tr>
+              <td style="background-color: #f9fafb; padding: 25px 40px; text-align: center; border-top: 1px solid #e5e7eb;">
+                <p style="margin: 0 0 8px 0; font-size: 13px; color: #6b7280;">
+                  You received this email because you subscribed to StaYzo newsletter updates.
+                </p>
+                <p style="margin: 0; font-size: 12px; color: #9ca3af;">
+                  © 2026 StaYzo Hotel Booking Inc. All rights reserved.
+                </p>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+  </html>
+  `;
+
+  // 1. Try Resend API first
+  if (resend) {
+    try {
+      const response = await resend.emails.send({
+        from: 'StaYzo Club <onboarding@resend.dev>',
+        to: [targetEmail],
+        subject: '🎉 Welcome to StaYzo! Your $50 Travel Voucher Inside',
+        html: htmlContent,
+      });
+
+      if (!response.error) {
+        console.log(`⚡ Resend Newsletter Email Sent Successfully to ${targetEmail}:`, response.data?.id);
+        return response;
+      }
+    } catch (resendErr) {
+      console.warn("⚠️ Resend Newsletter error, falling back to Nodemailer:", resendErr.message);
+    }
+  }
+
+  // 2. Nodemailer Fallback
+  try {
+    const info = await transporter.sendMail({
+      from: `"StaYzo Travel Club" <${senderEmail}>`,
+      to: targetEmail,
+      subject: '🎉 Welcome to StaYzo! Your $50 Travel Voucher Inside',
+      html: htmlContent,
+    });
+    console.log(`✅ Nodemailer Newsletter Email Sent to ${targetEmail}:`, info.messageId);
+    return info;
+  } catch (error) {
+    console.error("❌ Newsletter Email Delivery Error:", error.message);
+  }
+};
+

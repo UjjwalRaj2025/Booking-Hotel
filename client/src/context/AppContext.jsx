@@ -35,6 +35,34 @@ export const AppProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       const token = await getToken();
+      if (!token) return;
+
+      // Extract full name / display name from Clerk user object
+      const clerkName = 
+        user.fullName || 
+        `${user.firstName || ''} ${user.lastName || ''}`.trim() || 
+        user.username || 
+        (user.primaryEmailAddress?.emailAddress ? user.primaryEmailAddress.emailAddress.split('@')[0] : "");
+      
+      const clerkEmail = user.primaryEmailAddress?.emailAddress || "";
+      const clerkImage = user.imageUrl || "";
+
+      // Sync user profile to backend
+      if (clerkName || clerkEmail) {
+        await axios.post(
+          "/api/user/sync",
+          {
+            userId: user.id,
+            username: clerkName,
+            email: clerkEmail,
+            image: clerkImage,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        ).catch(() => {});
+      }
+
       const { data } = await axios.get("/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -47,7 +75,6 @@ export const AppProvider = ({ children }) => {
         localStorage.setItem("isOwner", ownerStatus ? "true" : "false");
         setSearchedCities(data.recentSearchedCities || []);
       } else {
-        // Retry fetching user details after 5 sec
         setTimeout(() => {
           fetchUser();
         }, 5000);
