@@ -1,10 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Title from '../components/Title';
 import { userBookingsDummyData, assets } from '../assets/assets';
+import { useAppContext } from '../context/AppContext';
 
 const MyBookings = () => {
-
+    const { axios, getToken, user } = useAppContext();
     const [bookings, setBookings] = useState(userBookingsDummyData);
+
+    useEffect(() => {
+        const fetchUserBookings = async () => {
+            if (!user) return;
+            try {
+                const token = await getToken();
+                const { data } = await axios.get('/api/bookings/user', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (data.success && data.bookings && data.bookings.length > 0) {
+                    setBookings(data.bookings);
+                }
+            } catch (error) {
+                console.error("Failed to fetch user bookings:", error);
+            }
+        };
+
+        fetchUserBookings();
+    }, [user]);
 
     return (
         <div className='py-28 md:pb-35 md:pt-32 px-4 md:px-16 lg:px-24 xl:px-32'>

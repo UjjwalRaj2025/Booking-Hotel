@@ -1,8 +1,11 @@
 import express from "express";
-import { syncUser } from "../controllers/userController.js";
+import { getUserData, storeRecentSearchedCities, syncUser } from "../controllers/userController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.post("/sync", syncUser);
+userRouter.get('/', protect, getUserData);
+userRouter.post('/store-recent-search', protect, storeRecentSearchedCities);
+userRouter.post('/sync', protect, syncUser);
 
-export default router;
+export default userRouter;

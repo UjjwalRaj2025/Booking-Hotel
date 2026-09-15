@@ -1,8 +1,9 @@
 
 import React,{useEffect, useState } from "react";
 import { assets } from "../assets/assets";
-import { useClerk, useUser, UserButton } from "@clerk/react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useClerk,  UserButton } from "@clerk/react";
+import { Link, useLocation  } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
 
 
@@ -17,7 +18,7 @@ const Navbar = () => {
         { name: 'Home', path: '/' },
         { name: 'Hotels', path: '/rooms' },
         { name: 'Experience', path: '/' },
-        { name: 'About', path: '/' },
+        { name: 'About', path: '/about' },
     ];
 
    
@@ -25,9 +26,21 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const{openSignIn} =useClerk()
-    const{user }= useUser()
-    const navigate = useNavigate()
+   
     const location = useLocation()
+
+    const { user, navigate, isOwner, setShowHotelReg } = useAppContext()
+
+    const handleDashboardClick = () => {
+        if (!user) {
+            return openSignIn();
+        }
+        if (isOwner) {
+            navigate('/owner');
+        } else {
+            setShowHotelReg(true);
+        }
+    };
 
 
     useEffect(() => {
@@ -60,13 +73,13 @@ const Navbar = () => {
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-4 lg:gap-8">
                     {navLinks.map((link, i) => (
-                        <a key={i} href={link.path} className={`group flex flex-col gap-0.5 ${isScrolled ? "text-gray-700" : "text-white"}`}>
+                        <Link key={i} to={link.path} className={`group flex flex-col gap-0.5 ${isScrolled ? "text-gray-700" : "text-white"}`}>
                             {link.name}
                             <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
-                        </a>
+                        </Link>
                     ))}
-                    <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
-                        Dashboard
+                    <button onClick={handleDashboardClick} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
+                        {user && isOwner ? "Dashboard" : "List Your Hotel"}
                     </button>
                 </div>
             {/* Desktop Right */}
@@ -126,13 +139,13 @@ const Navbar = () => {
                     </button>
 
                     {navLinks.map((link, i) => (
-                        <a key={i} href={link.path} onClick={() => setIsMenuOpen(false)}>
+                        <Link key={i} to={link.path} onClick={() => setIsMenuOpen(false)}>
                             {link.name}
-                        </a>
+                        </Link>
                     ))}
 
-                    <button className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
-                        Dashboard
+                    <button onClick={() => { setIsMenuOpen(false); handleDashboardClick(); }} className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
+                        {user && isOwner ? "Dashboard" : "List Your Hotel"}
                     </button>
 
  {!user && (

@@ -9,9 +9,43 @@
 }
 
 
-*{
-  font-family : Outfit;
+* {
+  font-family: Outfit;
 }
-.font-playfair{
-  font-family: Playufair !important;
+.font-playfair {
+  font-family: Playfair, serif !important;
+}
+
+/* Page Entry Fade & Slide-up Animation */
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-entry {
+  animation: pageFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Global Button & Interactive Click Micro-Interactions */
+button,
+a,
+[role="button"],
+.cursor-pointer {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.2s ease,
+              opacity 0.2s ease;
+}
+
+button:active,
+a:active,
+[role="button"]:active,
+.cursor-pointer:active {
+  transform: scale(0.95) translateY(1px) !important;
 }

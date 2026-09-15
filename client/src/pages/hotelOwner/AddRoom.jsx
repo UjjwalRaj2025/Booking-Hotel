@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import Title from "../../components/Title";
 import { assets } from "../../assets/assets";
 import { FaTrash } from "react-icons/fa";
+import { useAppContext } from "../../context/AppContext";
+import { toast } from "react-hot-toast";
 
 const AddRoom = () => {
+  const { axios, getToken } = useAppContext();
+  const [loading, setLoading] = useState(false);
   const [images, setImages] = useState({
     1: null,
     2: null,
@@ -12,6 +16,7 @@ const AddRoom = () => {
   });
 
   const [inputs, setInputs] = useState({
+    roomName: "",
     roomType: "",
     pricePerNight: "",
     amenities: {
@@ -23,8 +28,64 @@ const AddRoom = () => {
     },
   });
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!inputs.roomType || !inputs.pricePerNight) {
+        return toast.error("Please fill in room type and price");
+      }
+      const selectedAmenities = Object.keys(inputs.amenities).filter(
+        (key) => inputs.amenities[key]
+      );
+
+      const formData = new FormData();
+      formData.append("roomName", inputs.roomName);
+      formData.append("roomType", inputs.roomType);
+      formData.append("pricePerNight", inputs.pricePerNight);
+      formData.append("amenities", JSON.stringify(selectedAmenities));
+
+      Object.keys(images).forEach((key) => {
+        if (images[key]) {
+          formData.append("images", images[key]);
+        }
+      });
+
+      setLoading(true);
+      const token = await getToken();
+      const { data } = await axios.post("/api/rooms", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (data.success) {
+        toast.success(data.message || "Room added successfully");
+        setInputs({
+          roomName: "",
+          roomType: "",
+          pricePerNight: "",
+          amenities: {
+            "Free WiFi": false,
+            "Free Breakfast": false,
+            "Room Service": false,
+            "Mountain View": false,
+            "Pool Access": false,
+          },
+        });
+        setImages({ 1: null, 2: null, 3: null, 4: null });
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <form className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+    <form onSubmit={handleSubmit} className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
 
       <Title
         align="left"
@@ -96,9 +157,27 @@ const AddRoom = () => {
         </div>
       </div>
 
-      {/* Room Type & Price */}
+      {/* Room Name, Room Type & Price */}
 
-      <div className="grid md:grid-cols-2 gap-6 mt-10">
+      <div className="grid md:grid-cols-3 gap-6 mt-10">
+
+        <div>
+          <label className="block text-gray-700 font-medium mb-2">
+            Room Name / No
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Deluxe Suite 101"
+            value={inputs.roomName}
+            onChange={(e) =>
+              setInputs({
+                ...inputs,
+                roomName: e.target.value,
+              })
+            }
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+          />
+        </div>
 
         <div>
           <label className="block text-gray-700 font-medium mb-2">
@@ -113,7 +192,7 @@ const AddRoom = () => {
                 roomType: e.target.value,
               })
             }
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
           >
             <option value="">Select Room Type</option>
             <option value="Single Bed">Single Bed</option>
@@ -139,7 +218,7 @@ const AddRoom = () => {
                 pricePerNight: e.target.value,
               })
             }
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           />
         </div>
       </div>
@@ -188,9 +267,10 @@ const AddRoom = () => {
 
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-3 rounded-xl shadow-md hover:shadow-xl transition duration-300"
+          disabled={loading}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-3 rounded-xl shadow-md hover:shadow-xl transition duration-300 disabled:opacity-50"
         >
-          Add Room
+          {loading ? "Uploading..." : "Add Room"}
         </button>
 
       </div>

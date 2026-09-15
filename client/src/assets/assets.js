@@ -38,10 +38,12 @@ import uploadArea from "./uploadArea.svg";
 import totalBookingIcon from "./totalBookingIcon.svg";
 import totalRevenueIcon from "./totalRevenueIcon.svg";
 import heroImage from "./heroImage.png";
+import aboutHero from "./aboutHero.jpg";
 
 
 
 export const assets = {
+    aboutHero,
     heroImage,
     logo,
     searchIcon,
@@ -78,10 +80,49 @@ export const assets = {
 }
 
 export const cities = [
+    "Mumbai",
+    "Delhi",
+    "Bengaluru",
+    "Hyderabad",
+    "Chennai",
+    "Kolkata",
+    "Jaipur",
+    "Udaipur",
+    "Goa",
+    "Pune",
+    "Ahmedabad",
+    "Agra",
+    "Varanasi",
+    "Kochi",
+    "Shimla",
+    "Manali",
+    "Rishikesh",
+    "Amritsar",
+    "Chandigarh",
+    "Surat",
+    "Lucknow",
+    "Patna",
+    "Bhopal",
+    "Indore",
+    "Dehradun",
+    "Mysore",
+    "Ooty",
+    "Darjeeling",
+    "Srinagar",
+    "Jodhpur",
+    "Jaisalmer",
+    "Nagpur",
+    "Coimbatore",
+    "Visakhapatnam",
+    "Guwahati",
+    "Thiruvananthapuram",
+    "Puducherry",
+    "Haridwar",
+    "Ranchi",
     "Dubai",
     "Singapore",
     "New York",
-    "London",
+    "London"
 ];
 
 // Exclusive Offers Dummy Data

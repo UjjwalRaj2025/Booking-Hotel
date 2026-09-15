@@ -11,17 +11,21 @@ const HotelCard = ({room , index}) => {
 
            {index % 2 ===0 &&  <p className='px-5 py-1 absolute top-2 left-2 text-xs bg-white text-gray-700 font-medium rounded-full'>Best Seller</p>}
 
-        <div className='p-4 pt-7 hover:bg-blue-50 transition-all cursor-pointer'>
+        <div className='p-4 pt-5 hover:bg-blue-50 transition-all cursor-pointer'>
+            <div className="flex items-center gap-1.5 text-xs text-gray-500 font-medium mb-1">
+                <img src={assets.locationIcon} alt="city-icon" className="w-3.5 h-3.5 opacity-70" />
+                <span>{room.hotel?.city || room.city || "Puducherry"}</span>
+            </div>
             <div className='flex items-center justify-between'>
                 <p className='font-playfair text-xl font-medium text-gray-800'>
                     {room.hotel?.name}</p>
-                <div className = 'flex items-center gap-1'>
+                <div className = 'flex items-center gap-1 text-sm font-medium'>
                     <img src={assets.starIconFilled} alt="star-icon"/> 4.5
                 </div>
             </div>
-            <div className="flex items-center gap-1 text-sm">
-            <img src={assets.locationIcon} alt="location-icon"/> 
-                <span>{room.hotel?.address}</span>
+            <div className="flex items-center gap-1 text-sm mt-1 text-gray-500">
+                <img src={assets.locationIcon} alt="location-icon" className="w-3.5 h-3.5 opacity-60" /> 
+                <span className="truncate">{room.hotel?.address}</span>
             </div>
             <div className ='flex items-center justify-between mt-4'>
                 <p><span className='text-xl text-gray-800'>${room.pricePerNight}</span>/night</p>
